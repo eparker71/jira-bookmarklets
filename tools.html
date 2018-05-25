@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tools</title>
+
+<style>
+a.bookmarklet, a.button {
+    display: -moz-inline-box;
+    display: inline-block;
+    padding: 1px 6px;
+    height: 18px;
+    color: #fff;
+    background: #32a0eb;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Drag this bookmarklet to your bookmarks bar</h2>
+
+Drag this &rarr; <a class="bookmarklet" href="javascript:(function()%7Bfunction%20callback()%7B(function(%24)%7Bvar%20jQuery%3D%24%3Bvar%20total%20%3D%200%3Bvar%20subset%20%3D%203%3Bvar%20size%20%3D%20%24('table.aui.ghx-auto%20tr%20td%3Anth-child(3)').length%3Bfunction%20toFixed(num%2C%20fixed)%20%7Bvar%20re%20%3D%20new%20RegExp('%5E-%3F%5C%5Cd%2B(%3F%3A%5C.%5C%5Cd%7B0%2C'%20%2B%20(fixed%20%7C%7C%20-1)%20%2B%20'%7D)%3F')%3Breturn%20num.toString().match(re)%5B0%5D%3B%7Dvar%20count%20%3D%200%3B%24('table.aui.ghx-auto%20tr%20td%3Anth-child(3)').each(function(i)%20%7Bif(count%20%3E%3D%20(size%20-%20subset))%7B%24(this).css('background-color'%2C%20'%23ffffbb')%3Btotal%20%3D%20total%20%2B%20Number(%24(this).text())%3B%7Dcount%2B%2B%3B%7D)%3Bvar%20r%20%3D%20'%3Ctr%3E'%3Br%20%2B%3D%20'%3Ctd%3E%3C%2Ftd%3E'%3Br%20%2B%3D%20'%3Ctd%20class%3D%22ghx-right%22%3E%3Cb%3EVelocity%3C%2Fb%3E%3C%2Ftd%3E'%3Br%20%2B%3D%20'%3Ctd%20class%3D%22ghx-right%22%3E%3Cb%3E'%20%2B%20toFixed(total%20%2F%20subset%2C%202)%20%2B%20'%3C%2Fb%3E%3C%2Ftd%3E'%3Br%20%2B%3D%20'%3C%2Ftr%3E'%3B%24('table.aui.ghx-auto%20tbody').append(r)%7D)(jQuery.noConflict(true))%7Dvar%20s%3Ddocument.createElement(%22script%22)%3Bs.src%3D%22https%3A%2F%2Fajax.googleapis.com%2Fajax%2Flibs%2Fjquery%2F1.11.1%2Fjquery.min.js%22%3Bif(s.addEventListener)%7Bs.addEventListener(%22load%22%2Ccallback%2Cfalse)%7Delse%20if(s.readyState)%7Bs.onreadystatechange%3Dcallback%7Ddocument.body.appendChild(s)%3B%7D)()">Calc Velocity</a>
+
+up to the bookmark bar &uarr;
+
+<p></p>
+Drag this &rarr; <a class="bookmarklet" href="javascript:(function()%7Bfunction%20callback()%7B(function(%24)%7Bvar%20jQuery%3D%24%3Bfunction%20toFixed(num%2C%20fixed)%20%7Bvar%20re%20%3D%20new%20RegExp('%5E-%3F%5C%5Cd%2B(%3F%3A%5C.%5C%5Cd%7B0%2C'%20%2B%20(fixed%20%7C%7C%20-1)%20%2B%20'%7D)%3F')%3Breturn%20num.toString().match(re)%5B0%5D%3B%7Dfunction%20transform(num%2C%20max)%7Breturn%20toFixed(max%20-%20num%2C%202)%3B%7Dvar%20total%20%3D%200%3Bvar%20a%20%3D%20%5B%5D%3Bvar%20b%20%3D%20%5B%5D%3B%24('table.aui.ghx-auto%20tr%20td%3Anth-child(3)').each(function(i)%20%7Ba.push(Number(%24(this).text()))%3B%7D)%3Bfor%20(var%20i%20%3D%200%3B%20i%20%3C%3D%20a.length%20-%203%3B%20i%2B%2B)%20%7Bfor%20(var%20y%20%3D%200%3B%20y%20%3C%3D%202%3B%20y%2B%2B)%20%7Btotal%20%2B%3D%20a%5Bi%20%2B%20y%5D%3B%7Db.push(total%20%2F%203)%3Btotal%20%3D%200%3B%7Dvar%20max_chart_height%20%3D%20300%3Bvar%20max_chart_width%20%3D%20450%3Bvar%20max_graph_height%20%3D%20max_chart_height%20*%200.8%3Bvar%20max_graph_width%20%3D%20max_chart_width%20*%200.8%3Bconst%20c%20%3D%20b.map(x%20%3D%3E%20transform(x*1.8%2Cmax_graph_height))%3Bconst%20d%20%3D%20b.map(x%20%3D%3E%20toFixed(x%2C%202))%3Bvar%20max_graph_height%20%3D%20max_chart_height%20*%200.8%3Bvar%20max_graph_width%20%3D%20max_chart_width%20*%200.8%3Bvar%20graph_x_increment%20%3D%20toFixed(max_graph_width%2F5%2C0)%3Bvar%20graph_y_increment%20%3D%20toFixed(max_graph_height%2F3%2C0)%3Bvar%20graph_ylable_pos%20%3D%20max_graph_height%2B15%3Bvar%20min_graph_x%20%3D%20max_chart_width%2F10%3Bvar%20graph_y_label_pos%20%3D%20min_graph_x%20-%2015%3Bvar%20dataOffset%20%3D%20parseInt(min_graph_x%2C10)%20%2B%20parseInt(graph_x_increment%2C10)%3Bvar%20svg%20%3D%20''%3Bsvg%20%2B%3D%20'%3Csvg%20version%3D%221.2%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22'%3Bsvg%20%2B%3D%20'%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20style%3D%22height%3A%20'%2Bmax_chart_height%2B'px%3Bwidth%3A%20'%2Bmax_chart_width%2B'px%3B%22'%3Bsvg%20%2B%3D%20'%20aria-labelledby%3D%22title%22%20role%3D%22img%22%3E'%3Bsvg%20%2B%3D%20'%20%3Ctitle%20id%3D%22title%22%3ETO%20DO%3C%2Ftitle%3E'%3Bsvg%20%2B%3D%20'%20%3Cg%20style%3D%22stroke%3A%20%23ccc%3Bstroke-dasharray%3A%200%3Bstroke-width%3A%201%3B%22%20id%3D%22yGrid%22%3E'%3Bsvg%20%2B%3D%20'%20%20%3Cline%20x1%3D%22'%2Bmin_graph_x%2B'%22%20x2%3D%22'%2Bmin_graph_x%2B'%22%20y1%3D%22'%2Bgraph_y_increment%2B'%22%20y2%3D%22'%2Bmax_graph_height%2B'%22%3E%3C%2Fline%3E'%3Bsvg%20%2B%3D%20'%20%3C%2Fg%3E'%3Bsvg%20%2B%3D%20'%20%3Cg%20style%3D%22stroke%3A%20%23ccc%3Bstroke-dasharray%3A%200%3Bstroke-width%3A%201%3B%22%20id%3D%22xGrid%22%3E'%3Bsvg%20%2B%3D%20'%20%20%3Cline%20x1%3D%22'%2Bmin_graph_x%2B'%22%20x2%3D%22'%2Bmax_graph_width%2B'%22%20y1%3D%22'%2Bmax_graph_height%2B'%22%20y2%3D%22'%2Bmax_graph_height%2B'%22%3E%3C%2Fline%3E'%3Bsvg%20%2B%3D%20'%20%3C%2Fg%3E'%3Bsvg%20%2B%3D%20'%20%3Cg%20style%3D%22text-anchor%3A%20middle%3B%22%3E'%3Bsvg%20%2B%3D%20'%20%20%3Ctext%20x%3D%22'%2Bmax_graph_width%2F2%2B'%22%20y%3D%22'%2Bgraph_ylable_pos%2B'%22%20style%3D%22font-weight%3A%20bold%3Btext-transform%3A%20uppercase%3Bfont-size%3A%2012px%3Bfill%3A%20black%3B%22%3ETime%3C%2Ftext%3E'%3Bsvg%20%2B%3D%20'%3C%2Fg%3E'%3Bsvg%20%2B%3D%20'%3Cg%20style%3D%22text-anchor%3A%20end%3B%22%3E'%3Bsvg%20%2B%3D%20'%20%20%3Ctext%20x%3D%22'%2Bgraph_y_label_pos%2B'%22%20y%3D%22'%2Bgraph_y_increment%2B'%22%3E100%3C%2Ftext%3E'%3Bsvg%20%2B%3D%20'%20%20%3Ctext%20x%3D%22'%2Bgraph_y_label_pos%2B'%22%20y%3D%22'%2Bgraph_y_increment*2%2B'%22%3E50%3C%2Ftext%3E'%3Bsvg%20%2B%3D%20'%20%20%3Ctext%20x%3D%22'%2Bgraph_y_label_pos%2B'%22%20y%3D%22'%2Bgraph_y_increment*3%2B'%22%3E0%3C%2Ftext%3E'%3Bsvg%20%2B%3D%20'%3C%2Fg%3E'%3Bsvg%20%2B%3D%20'%3Cg%20style%3D%22fill%3A%20red%3Bstroke-width%3A%201%3B%22%20data-setname%3D%22Our%20first%20data%20set%22%3E'%3Bsvg%20%2B%3D%20'%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%230074d9%22%20stroke-width%3D%223%22%20'%3Bsvg%20%2B%3D%20'points%3D%22'%3Bsvg%20%2B%3D%20'%20'%2Bmin_graph_x%2B'%2C'%2Bc%5B0%5D%2B'%20'%3Bsvg%20%2B%3D%20'%20'%2BdataOffset%2B'%2C'%2Bc%5B1%5D%2B'%20'%3Bvar%20x%3Bvar%20tmp%20%3D%20dataOffset%3Bfor(x%20%3D%202%3B%20x%20%3C%20c.length%3B%20x%2B%2B)%7Btmp%20%2B%3D%20parseInt(graph_x_increment%2C10)%3Bsvg%20%2B%3D%20'%20'%2Btmp%2B'%2C'%2Bc%5Bx%5D%2B'%20'%3B%7Dsvg%20%2B%3D%20'%22%2F%3E'%3Bvar%20textOffset%20%3D%20parseInt(c%5B0%5D%2C%2010)%20-%2010%3Bsvg%20%2B%3D%20'%3Ccircle%20cx%3D%22'%2Bmin_graph_x%2B'%22%20cy%3D'%2Bc%5B0%5D%2B'%20data-value%3D%22'%2Bd%5B0%5D%2B'%22%20r%3D%224%22%3E%3C%2Fcircle%3E'%3Bsvg%20%2B%3D%20'%3Ctext%20x%3D%22'%2Bmin_graph_x%2B'%22%20y%3D'%2B%20textOffset%20%2B'%3E'%2Bd%5B0%5D%2B'%3C%2Ftext%3E'%3BtextOffset%20%3D%20parseInt(c%5B1%5D%2C%2010)%20-%2010%3Bsvg%20%2B%3D%20'%3Ccircle%20cx%3D%22'%2BdataOffset%2B'%22%20cy%3D'%2Bc%5B1%5D%2B'%20data-value%3D%22'%2Bd%5B1%5D%2B'%22%20r%3D%224%22%3E%3C%2Fcircle%3E'%3Bsvg%20%2B%3D%20'%3Ctext%20x%3D%22'%2BdataOffset%2B'%22%20y%3D'%2B%20textOffset%20%2B'%3E'%2Bd%5B1%5D%2B'%3C%2Ftext%3E'%3BtextOffset%20%3D%20parseInt(c%5B2%5D%2C%2010)%20-%2010%3BdataOffset%20%2B%3D%20parseInt(graph_x_increment%2C10)%3Bsvg%20%2B%3D%20'%3Ccircle%20cx%3D%22'%2BdataOffset%2B'%22%20cy%3D'%2Bc%5B2%5D%2B'%20data-value%3D%22'%2Bd%5B2%5D%2B'%22%20r%3D%224%22%3E%3C%2Fcircle%3E'%3Bsvg%20%2B%3D%20'%3Ctext%20x%3D%22'%2BdataOffset%2B'%22%20y%3D'%2B%20textOffset%20%2B'%3E'%2Bd%5B2%5D%2B'%3C%2Ftext%3E'%3BtextOffset%20%3D%20parseInt(c%5B3%5D%2C%2010)%20-%2010%3BdataOffset%20%2B%3D%20parseInt(graph_x_increment%2C10)%3Bsvg%20%2B%3D%20'%3Ccircle%20cx%3D%22'%2BdataOffset%2B'%22%20cy%3D'%2Bc%5B3%5D%2B'%20data-value%3D%22'%2Bd%5B3%5D%2B'%22%20r%3D%224%22%3E%3C%2Fcircle%3E'%3Bsvg%20%2B%3D%20'%3Ctext%20x%3D%22'%2BdataOffset%2B'%22%20y%3D'%2B%20textOffset%20%2B'%3E'%2Bd%5B3%5D%2B'%3C%2Ftext%3E'%3BtextOffset%20%3D%20parseInt(c%5B4%5D%2C%2010)%20-%2010%3BdataOffset%20%2B%3D%20parseInt(graph_x_increment%2C10)%3Bsvg%20%2B%3D%20'%3Ccircle%20cx%3D%22'%2BdataOffset%2B'%22%20cy%3D'%2Bc%5B4%5D%2B'%20data-value%3D%22'%2Bd%5B4%5D%2B'%22%20r%3D%224%22%3E%3C%2Fcircle%3E'%3Bsvg%20%2B%3D%20'%3Ctext%20x%3D%22'%2BdataOffset%2B'%22%20y%3D'%2B%20textOffset%20%2B'%3E'%2Bd%5B4%5D%2B'%3C%2Ftext%3E'%3Bsvg%20%2B%3D%20'%3C%2Fg%3E%3C%2Fsvg%3E'%3B%24('%23ghx-chart-data%20table').css('float'%2C'left')%3B%24('%23ghx-chart-data').append(svg)%7D)(jQuery.noConflict(true))%7Dvar%20s%3Ddocument.createElement(%22script%22)%3Bs.src%3D%22https%3A%2F%2Fajax.googleapis.com%2Fajax%2Flibs%2Fjquery%2F1.11.1%2Fjquery.min.js%22%3Bif(s.addEventListener)%7Bs.addEventListener(%22load%22%2Ccallback%2Cfalse)%7Delse%20if(s.readyState)%7Bs.onreadystatechange%3Dcallback%7Ddocument.body.appendChild(s)%3B%7D)()">Velocity Over Time</a>
+
+up to the bookmark bar &uarr;
+
+<p>Then go to the Velocity Chart in Jira. You will see a bar chart and underneath it, you
+will see a table that looks something like this </p>
+
+<h2>
+  Snippet from the Velocity Chart in Jira
+</h2>
+
+<div id="ghx-chart-data">
+<table class="aui ghx-auto">
+  <thead>
+    <tr>
+      <th>Sprint</th>
+      <th class="ghx-right">Commitment</th>
+      <th class="ghx-right">Completed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sprint 1</td>
+      <td class="ghx-right">18</td>
+      <td class="ghx-right">23</td>
+    </tr>
+    <tr>
+      <td>Sprint 2</td>
+      <td class="ghx-right">21</td>
+      <td class="ghx-right">27</td>
+    </tr>
+    <tr>
+      <td>Sprint 3</td>
+      <td class="ghx-right">21</td>
+      <td class="ghx-right">34</td>
+    </tr>
+    <tr>
+      <td>Sprint 4</td>
+      <td class="ghx-right">27</td>
+      <td class="ghx-right">38</td>
+    </tr>
+    <tr>
+      <td>Sprint 5</td>
+      <td class="ghx-right">20</td>
+      <td class="ghx-right">22</td>
+    </tr>
+    <tr>
+      <td>Sprint 6</td>
+      <td class="ghx-right">33</td>
+      <td class="ghx-right">25</td>
+    </tr>
+    <tr>
+      <td>Sprint 7</td>
+      <td class="ghx-right">25</td>
+      <td class="ghx-right">40</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<p>Then just click on the bookmark you added and you will see the velocity calculated on
+the page. You can try it on this page to see what it looks like. </p>
+
+</body>
+
+</html>
