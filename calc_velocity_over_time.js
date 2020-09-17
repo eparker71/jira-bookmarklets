@@ -8,8 +8,8 @@ function transform(num, max) {
 }
 
 var total = 0;
-var a = [];
-var b = [];
+var a = [];  // store the raw data in an array
+var b = [];  // store the calculated velocity
 
 $('table.aui.ghx-auto tr td:nth-child(3)').each(function(i) {
   a.push(Number($(this).text()));
@@ -30,6 +30,7 @@ if (!elementExists) {
   });
 }
 
+// calc rolling velocity of table data
 for (var i = 0; i <= a.length - 3; i++) {
   for (var y = 0; y <= 2; y++) {
     total += a[i + y];
@@ -38,12 +39,18 @@ for (var i = 0; i <= a.length - 3; i++) {
   total = 0;
 }
 
+// size of chart box on page
 var max_chart_height = 300;
 var max_chart_width = 450;
+
+// size of graph inside chart
 var max_graph_height = max_chart_height * 0.8;
 var max_graph_width = max_chart_width * 0.8;
+
+
 const c = b.map(x => transform(x * 1.8, max_graph_height));
 const d = b.map(x => toFixed(x, 2));
+
 var max_graph_height = max_chart_height * 0.8;
 var max_graph_width = max_chart_width * 0.8;
 var graph_x_increment = toFixed(max_graph_width / 5, 0);
@@ -53,6 +60,8 @@ var min_graph_x = max_chart_width / 10;
 var graph_y_label_pos = min_graph_x - 15;
 var dataOffset = parseInt(min_graph_x, 10) + parseInt(graph_x_increment, 10);
 var svg = '';
+
+
 $('#v-0').text('Velocity');
 $('#v-3').text(d[0]);
 $('#v-4').text(d[1]);
