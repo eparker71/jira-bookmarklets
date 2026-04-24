@@ -1,147 +1,121 @@
-function toFixed(num, fixed) {
-  var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
-  return num.toString().match(re)[0];
-}
+const WINDOW_SIZE = 3;
 
-function transform(num, max) {
-  return toFixed(max - num, 2);
-}
-
-var total = 0;
-var a = [];  // store the raw data in an array
-var b = [];  // store the calculated velocity
-
-$('table.aui.ghx-auto tr td:nth-child(3)').each(function(i) {
-  a.push(Number($(this).text()));
+const a = [];
+document.querySelectorAll('table.aui.ghx-auto tr td:nth-child(3)').forEach(el => {
+  a.push(Number(el.textContent));
 });
 
-var elementExists = document.getElementById("v-0");
-if (!elementExists) {
-  $('table.aui.ghx-auto tr').each(function(i) {
-    if (i == 0) {
-      $(this).append('<th id="v-' + i + '" class="ghx-right"></th>');
+if (a.length < WINDOW_SIZE) return;
+
+// Calculate rolling averages
+const b = [];
+for (let i = 0; i <= a.length - WINDOW_SIZE; i++) {
+  let total = 0;
+  for (let y = 0; y < WINDOW_SIZE; y++) total += a[i + y];
+  b.push(total / WINDOW_SIZE);
+}
+
+// Add velocity column to table
+if (!document.getElementById('v-0')) {
+  document.querySelectorAll('table.aui.ghx-auto tr').forEach((row, i) => {
+    if (i === 0) {
+      row.insertAdjacentHTML('beforeend', `<th id="v-0" class="ghx-right">Velocity</th>`);
+    } else if (i >= WINDOW_SIZE) {
+      row.insertAdjacentHTML('beforeend', `<td id="v-${i}" class="ghx-right highlight"></td>`);
     } else {
-      if (i > 2) {
-        $(this).append('<td id="v-' + i + '" class="ghx-right highlight"></td>');
-      } else {
-        $(this).append('<td id="v-' + i + '" class="ghx-right"></td>');
-      }
+      row.insertAdjacentHTML('beforeend', `<td id="v-${i}" class="ghx-right"></td>`);
     }
   });
 }
 
-// calc rolling velocity of table data
-for (var i = 0; i <= a.length - 3; i++) {
-  for (var y = 0; y <= 2; y++) {
-    total += a[i + y];
-  }
-  b.push(total / 3);
-  total = 0;
+// Assign group classes for hover highlighting
+for (let i = 1; i <= a.length; i++) {
+  const startGroup = Math.max(1, i - WINDOW_SIZE + 1);
+  const endGroup = Math.min(b.length, i);
+  const classes = [];
+  for (let g = startGroup; g <= endGroup; g++) classes.push('g' + g);
+  const cell = document.querySelector(`table.aui.ghx-auto tr:nth-child(${i}) td:nth-child(3)`);
+  if (cell) cell.classList.add(...classes);
 }
 
-// size of chart box on page
-var max_chart_height = 300;
-var max_chart_width = 450;
-
-// size of graph inside chart
-var max_graph_height = max_chart_height * 0.8;
-var max_graph_width = max_chart_width * 0.8;
-
-
-const c = b.map(x => transform(x * 1.8, max_graph_height));
-const d = b.map(x => toFixed(x, 2));
-
-var max_graph_height = max_chart_height * 0.8;
-var max_graph_width = max_chart_width * 0.8;
-var graph_x_increment = toFixed(max_graph_width / 5, 0);
-var graph_y_increment = toFixed(max_graph_height / 3, 0);
-var graph_ylable_pos = max_graph_height + 15;
-var min_graph_x = max_chart_width / 10;
-var graph_y_label_pos = min_graph_x - 15;
-var dataOffset = parseInt(min_graph_x, 10) + parseInt(graph_x_increment, 10);
-var svg = '';
-
-
-$('#v-0').text('Velocity');
-$('#v-3').text(d[0]);
-$('#v-4').text(d[1]);
-$('#v-5').text(d[2]);
-$('#v-6').text(d[3]);
-$('#v-7').text(d[4]);
-
-$('table.aui.ghx-auto tr:nth-child(1) td:nth-child(3)').addClass("g1");
-$('table.aui.ghx-auto tr:nth-child(2) td:nth-child(3)').addClass("g1 g2");
-$('table.aui.ghx-auto tr:nth-child(3) td:nth-child(3)').addClass("g1 g2 g3");
-$('table.aui.ghx-auto tr:nth-child(4) td:nth-child(3)').addClass("g2 g3 g4");
-$('table.aui.ghx-auto tr:nth-child(5) td:nth-child(3)').addClass("g3 g4 g5");
-$('table.aui.ghx-auto tr:nth-child(6) td:nth-child(3)').addClass("g4 g5");
-$('table.aui.ghx-auto tr:nth-child(7) td:nth-child(3)').addClass("g5");
-
-svg += '<svg version="1.2" xmlns="http://www.w3.org/2000/svg"';
-svg += ' xmlns:xlink="http://www.w3.org/1999/xlink" style="height: ' + max_chart_height + 'px;width: ' + max_chart_width + 'px;padding-left:50"';
-svg += ' aria-labelledby="title" role="img" id="velocity-chart">';
-svg += ' <title id="title">Change In Velocity</title>';
-svg += ' <g style="stroke: #ccc;stroke-dasharray: 0;stroke-width: 1;" id="yGrid">';
-svg += '  <line x1="' + min_graph_x + '" x2="' + min_graph_x + '" y1="' + graph_y_increment + '" y2="' + max_graph_height + '"></line>';
-svg += ' </g>';
-svg += ' <g style="stroke: #ccc;stroke-dasharray: 0;stroke-width: 1;" id="xGrid">';
-svg += '  <line x1="' + min_graph_x + '" x2="' + max_graph_width + '" y1="' + max_graph_height + '" y2="' + max_graph_height + '"></line>';
-svg += ' </g>';
-svg += ' <g style="text-anchor: middle;">';
-svg += '  <text x="' + max_graph_width / 2 + '" y="' + graph_ylable_pos + '" style="font-weight: bold;text-transform: uppercase;font-size: 12px;fill: black;">&Delta; in Velocity</text>';
-svg += '</g>';
-svg += '<g style="text-anchor: end;">';
-svg += '  <text x="' + graph_y_label_pos + '" y="' + graph_y_increment + '">100</text>';
-svg += '  <text x="' + graph_y_label_pos + '" y="' + graph_y_increment * 2 + '">50</text>';
-svg += '  <text x="' + graph_y_label_pos + '" y="' + graph_y_increment * 3 + '">0</text>';
-svg += '</g>';
-svg += '<g style="fill: red;stroke-width: 1;" data-setname="Our first data set">';
-svg += '<polyline fill="none" stroke="#0074d9" stroke-width="3" ';
-svg += 'points="';
-svg += ' ' + min_graph_x + ',' + c[0] + ' ';
-svg += ' ' + dataOffset + ',' + c[1] + ' ';
-var x;
-var tmp = dataOffset;
-for (x = 2; x < c.length; x++) {
-  tmp += parseInt(graph_x_increment, 10);
-  svg += ' ' + tmp + ',' + c[x] + ' ';
+// Populate velocity column
+const d = b.map(x => String(parseFloat(x.toFixed(2))));
+for (let i = 0; i < d.length; i++) {
+  const cell = document.getElementById(`v-${i + WINDOW_SIZE}`);
+  if (cell) cell.textContent = d[i];
 }
-svg += '"/>';
-var textOffset = parseInt(c[0], 10) - 10;
-svg += '<circle cx="' + min_graph_x + '" cy=' + c[0] + ' data-value="' + d[0] + '" r="4"></circle>';
-svg += '<text x="' + min_graph_x + '" y=' + textOffset + '>' + d[0] + '</text>';
-textOffset = parseInt(c[1], 10) - 10;
-svg += '<circle cx="' + dataOffset + '" cy=' + c[1] + ' data-value="' + d[1] + '" r="4"></circle>';
-svg += '<text x="' + dataOffset + '" y=' + textOffset + '>' + d[1] + '</text>';
-textOffset = parseInt(c[2], 10) - 10;
-dataOffset += parseInt(graph_x_increment, 10);
-svg += '<circle cx="' + dataOffset + '" cy=' + c[2] + ' data-value="' + d[2] + '" r="4"></circle>';
-svg += '<text x="' + dataOffset + '" y=' + textOffset + '>' + d[2] + '</text>';
-textOffset = parseInt(c[3], 10) - 10;
-dataOffset += parseInt(graph_x_increment, 10);
-svg += '<circle cx="' + dataOffset + '" cy=' + c[3] + ' data-value="' + d[3] + '" r="4"></circle>';
-svg += '<text x="' + dataOffset + '" y=' + textOffset + '>' + d[3] + '</text>';
-textOffset = parseInt(c[4], 10) - 10;
-dataOffset += parseInt(graph_x_increment, 10);
-svg += '<circle cx="' + dataOffset + '" cy=' + c[4] + ' data-value="' + d[4] + '" r="4"></circle>';
-svg += '<text x="' + dataOffset + '" y=' + textOffset + '>' + d[4] + '</text>';
-svg += '</g></svg>';
-$('#ghx-chart-data table').css('float', 'left');
-var chartExists = document.getElementById("velocity-chart");
-if (!chartExists) {
-  $('#ghx-chart-data').append(svg);
 
-  $(document).ready(function() {
-    $('.highlight').mouseover(function() {
-      var id = $(this).attr('id');
-      var gnum = parseInt(id.split("-")[1]) - 2;
-      $(this).css('background-color', '#ffffbb');
-      $('.g' + gnum).css('background-color', '#ffeebd');
-    }).mouseout(function() {
-      var id = $(this).attr('id');
-      var gnum = parseInt(id.split("-")[1]) - 2;
-      $(this).css('background-color', 'white');
-      $('.g' + gnum).css('background-color', 'white');
+// Chart dimensions
+const MAX_CHART_HEIGHT = 300;
+const MAX_CHART_WIDTH = 450;
+const MAX_GRAPH_HEIGHT = MAX_CHART_HEIGHT * 0.8;
+const MAX_GRAPH_WIDTH = MAX_CHART_WIDTH * 0.8;
+const MIN_GRAPH_X = MAX_CHART_WIDTH / 10;
+
+// Scale y-axis to actual data with 20% headroom, rounded to a clean number
+const maxVelocity = Math.max(...b);
+const yAxisTop = Math.ceil(maxVelocity * 1.2 / 10) * 10;
+const yScale = MAX_GRAPH_HEIGHT / yAxisTop;
+
+// Evenly space data points across chart width
+const xIncrement = b.length > 1 ? (MAX_GRAPH_WIDTH - MIN_GRAPH_X) / (b.length - 1) : 0;
+
+// Map data to SVG coordinates
+const cx = b.map((_, i) => Math.round(MIN_GRAPH_X + i * xIncrement));
+const cy = b.map(v => (MAX_GRAPH_HEIGHT - v * yScale).toFixed(2));
+
+const yIncrement = MAX_GRAPH_HEIGHT / 3;
+const yLabelX = MIN_GRAPH_X - 15;
+const xLabelY = MAX_GRAPH_HEIGHT + 15;
+
+const pointsStr = cy.map((y, i) => `${cx[i]},${y}`).join(' ');
+const circlesStr = cy.map((y, i) => {
+  const textY = Math.round(parseFloat(y)) - 10;
+  return `<circle cx="${cx[i]}" cy="${y}" data-value="${d[i]}" r="4"></circle>`
+    + `<text x="${cx[i]}" y="${textY}">${d[i]}</text>`;
+}).join('');
+
+const svg = `<svg version="1.2" xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  style="height:${MAX_CHART_HEIGHT}px;width:${MAX_CHART_WIDTH}px;padding-left:50"
+  aria-labelledby="title" role="img" id="velocity-chart">
+  <title id="title">Change In Velocity</title>
+  <g style="stroke:#ccc;stroke-dasharray:0;stroke-width:1" id="yGrid">
+    <line x1="${MIN_GRAPH_X}" x2="${MIN_GRAPH_X}" y1="${yIncrement}" y2="${MAX_GRAPH_HEIGHT}"></line>
+  </g>
+  <g style="stroke:#ccc;stroke-dasharray:0;stroke-width:1" id="xGrid">
+    <line x1="${MIN_GRAPH_X}" x2="${MAX_GRAPH_WIDTH}" y1="${MAX_GRAPH_HEIGHT}" y2="${MAX_GRAPH_HEIGHT}"></line>
+  </g>
+  <g text-anchor="middle">
+    <text x="${MAX_GRAPH_WIDTH / 2}" y="${xLabelY}"
+      style="font-weight:bold;text-transform:uppercase;font-size:12px;fill:black">&Delta; in Velocity</text>
+  </g>
+  <g text-anchor="end">
+    <text x="${yLabelX}" y="${yIncrement}">${yAxisTop}</text>
+    <text x="${yLabelX}" y="${yIncrement * 2}">${Math.round(yAxisTop / 2)}</text>
+    <text x="${yLabelX}" y="${yIncrement * 3}">0</text>
+  </g>
+  <g style="fill:red;stroke-width:1">
+    <polyline fill="none" stroke="#0074d9" stroke-width="3" points="${pointsStr}"/>
+    ${circlesStr}
+  </g>
+</svg>`;
+
+const tableEl = document.querySelector('#ghx-chart-data table');
+if (tableEl) tableEl.style.float = 'left';
+
+if (!document.getElementById('velocity-chart')) {
+  document.querySelector('#ghx-chart-data').insertAdjacentHTML('beforeend', svg);
+
+  document.querySelectorAll('.highlight').forEach(cell => {
+    const gnum = parseInt(cell.id.split('-')[1], 10) - WINDOW_SIZE + 1;
+    cell.addEventListener('mouseover', () => {
+      cell.style.backgroundColor = '#ffffbb';
+      document.querySelectorAll('.g' + gnum).forEach(el => el.style.backgroundColor = '#ffeebd');
+    });
+    cell.addEventListener('mouseout', () => {
+      cell.style.backgroundColor = 'white';
+      document.querySelectorAll('.g' + gnum).forEach(el => el.style.backgroundColor = 'white');
     });
   });
 }
