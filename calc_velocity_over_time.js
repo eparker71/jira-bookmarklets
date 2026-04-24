@@ -55,7 +55,8 @@ const MIN_GRAPH_X = MAX_CHART_WIDTH / 10;
 // Scale y-axis to actual data with 20% headroom, rounded to a clean number
 const maxVelocity = Math.max(...b);
 const yAxisTop = Math.ceil(maxVelocity * 1.2 / 10) * 10;
-const yScale = MAX_GRAPH_HEIGHT / yAxisTop;
+const yIncrement = MAX_GRAPH_HEIGHT / 3;
+const yScale = (MAX_GRAPH_HEIGHT - yIncrement) / yAxisTop;
 
 // Evenly space data points across chart width
 const xIncrement = b.length > 1 ? (MAX_GRAPH_WIDTH - MIN_GRAPH_X) / (b.length - 1) : 0;
@@ -63,8 +64,6 @@ const xIncrement = b.length > 1 ? (MAX_GRAPH_WIDTH - MIN_GRAPH_X) / (b.length - 
 // Map data to SVG coordinates
 const cx = b.map((_, i) => Math.round(MIN_GRAPH_X + i * xIncrement));
 const cy = b.map(v => (MAX_GRAPH_HEIGHT - v * yScale).toFixed(2));
-
-const yIncrement = MAX_GRAPH_HEIGHT / 3;
 const yLabelX = MIN_GRAPH_X - 15;
 const xLabelY = MAX_GRAPH_HEIGHT + 15;
 
