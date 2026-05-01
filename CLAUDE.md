@@ -36,6 +36,6 @@ The script strips comments and collapses whitespace before encoding, so the read
 
 ## Key Jira DOM selectors used by the velocity bookmarklet
 
-- `[data-test-id="report-table"]` — wraps the sprint data table on the Velocity Chart page (Jira Cloud)
+- `[data-testid="software-velocity-report.root-container"]` — root container on the Velocity Chart page (Jira Cloud); contains both the ECharts canvas and the sprint data table
 - `td:nth-child(3)` — the "Completed" column (1-indexed; Sprint name is col 1, Commitment is col 2)
-- The SVG chart is injected directly into `[data-test-id="report-table"]` (no dedicated chart container exists in Jira Cloud)
+- The SVG chart is injected directly into `[data-testid="software-velocity-report.root-container"]` (no dedicated chart container exists in Jira Cloud)

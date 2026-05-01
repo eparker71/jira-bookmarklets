@@ -1,6 +1,6 @@
 const WINDOW_SIZE = 3;
 
-const TABLE = '[data-test-id="report-table"] table';
+const TABLE = '[data-testid="software-velocity-report.root-container"] table';
 
 const a = [];
 document.querySelectorAll(`${TABLE} tr td:nth-child(3)`).forEach(el => {
@@ -106,7 +106,7 @@ const tableEl = document.querySelector(TABLE);
 if (tableEl) tableEl.style.float = 'left';
 
 if (!document.getElementById('velocity-chart')) {
-  document.querySelector('[data-test-id="report-table"]').insertAdjacentHTML('beforeend', svg);
+  document.querySelector('[data-testid="software-velocity-report.root-container"]').insertAdjacentHTML('beforeend', svg);
 
   document.querySelectorAll('.highlight').forEach(cell => {
     const gnum = parseInt(cell.id.split('-')[1], 10) - WINDOW_SIZE + 1;
