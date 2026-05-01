@@ -1,7 +1,9 @@
 const WINDOW_SIZE = 3;
 
+const TABLE = '[data-test-id="report-table"] table';
+
 const a = [];
-document.querySelectorAll('table.aui.ghx-auto tr td:nth-child(3)').forEach(el => {
+document.querySelectorAll(`${TABLE} tr td:nth-child(3)`).forEach(el => {
   a.push(Number(el.textContent));
 });
 
@@ -17,13 +19,13 @@ for (let i = 0; i <= a.length - WINDOW_SIZE; i++) {
 
 // Add velocity column to table
 if (!document.getElementById('v-0')) {
-  document.querySelectorAll('table.aui.ghx-auto tr').forEach((row, i) => {
+  document.querySelectorAll(`${TABLE} tr`).forEach((row, i) => {
     if (i === 0) {
-      row.insertAdjacentHTML('beforeend', `<th id="v-0" class="ghx-right">Velocity</th>`);
+      row.insertAdjacentHTML('beforeend', `<th id="v-0" style="text-align:right">Velocity</th>`);
     } else if (i >= WINDOW_SIZE) {
-      row.insertAdjacentHTML('beforeend', `<td id="v-${i}" class="ghx-right highlight"></td>`);
+      row.insertAdjacentHTML('beforeend', `<td id="v-${i}" class="highlight" style="text-align:right"></td>`);
     } else {
-      row.insertAdjacentHTML('beforeend', `<td id="v-${i}" class="ghx-right"></td>`);
+      row.insertAdjacentHTML('beforeend', `<td id="v-${i}" style="text-align:right"></td>`);
     }
   });
 }
@@ -34,7 +36,7 @@ for (let i = 1; i <= a.length; i++) {
   const endGroup = Math.min(b.length, i);
   const classes = [];
   for (let g = startGroup; g <= endGroup; g++) classes.push('g' + g);
-  const cell = document.querySelector(`table.aui.ghx-auto tr:nth-child(${i}) td:nth-child(3)`);
+  const cell = document.querySelector(`${TABLE} tr:nth-child(${i}) td:nth-child(3)`);
   if (cell) cell.classList.add(...classes);
 }
 
@@ -100,11 +102,11 @@ const svg = `<svg version="1.2" xmlns="http://www.w3.org/2000/svg"
   </g>
 </svg>`;
 
-const tableEl = document.querySelector('#ghx-chart-data table');
+const tableEl = document.querySelector(TABLE);
 if (tableEl) tableEl.style.float = 'left';
 
 if (!document.getElementById('velocity-chart')) {
-  document.querySelector('#ghx-chart-data').insertAdjacentHTML('beforeend', svg);
+  document.querySelector('[data-test-id="report-table"]').insertAdjacentHTML('beforeend', svg);
 
   document.querySelectorAll('.highlight').forEach(cell => {
     const gnum = parseInt(cell.id.split('-')[1], 10) - WINDOW_SIZE + 1;

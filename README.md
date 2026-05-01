@@ -14,7 +14,7 @@ Adds a rolling 3-sprint velocity column and an SVG trend chart to Jira's Velocit
 - Hover over any velocity cell to highlight the three sprints that contributed to it
 - Renders a line chart (SVG) below the table showing velocity trend over time, with a y-axis scaled to the actual data
 
-**No dependencies** — pure vanilla JS, no jQuery.
+**No dependencies** — pure vanilla JS, no jQuery. Compatible with Jira Cloud.
 
 ### Installation
 
