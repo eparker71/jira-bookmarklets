@@ -7,7 +7,7 @@ document.querySelectorAll(`${TABLE} tr td:nth-child(3)`).forEach(el => {
   a.push(Number(el.textContent));
 });
 
-if (a.length < WINDOW_SIZE) return;
+if (a.length >= WINDOW_SIZE) {
 
 // Calculate rolling averages
 const b = [];
@@ -119,4 +119,6 @@ if (!document.getElementById('velocity-chart')) {
       document.querySelectorAll('.g' + gnum).forEach(el => el.style.backgroundColor = 'white');
     });
   });
+}
+
 }
